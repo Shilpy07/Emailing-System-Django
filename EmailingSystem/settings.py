@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+import django_heroku
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -75,13 +77,27 @@ WSGI_APPLICATION = 'EmailingSystem.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+#}
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'dc7as34jl5a4if',
+        'USER': 'pdibvhugamrdvc',
+        'PASSWORD': '52fda61de9ed3222ab4b43c93905ea176f82dfdc280c5db4233b728cbc9d2ff0',
+        'Port': '5432',
+       }
     }
-}
-# DEFAULT_FROM_EMAIL = 'shilpyvarshney07@gmail.com'
+
+DATABASES = dict()
+DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+
+DEFAULT_FROM_EMAIL = 'shilpyvarshney07@gmail.com'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
@@ -133,3 +149,5 @@ MEDIA_URL = '/images/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+django_heroku.settings(locals())
+del DATABASES['default']['OPTIONS']['sslmode']
